@@ -36,6 +36,7 @@ list21.next = list22;
 
 
 const toArr = (li) => {
+  if (!li) { return []; }
   let curr = li.next;
   let arr = [li.val];
 
@@ -54,18 +55,24 @@ const toArr = (li) => {
  */
 const mergeTwoLists = (l1, l2) => {
   let newArr = [];
-  newArr = toArr(l1).concat(toArr(l2)).sort((a, b) => a - b);
+  let result;
+  if (!l1 && !l2) {
+    result = null;
+  } else {
+    newArr = toArr(l1).concat(toArr(l2)).sort((a, b) => a - b);
 
-  const newList = new ListNode(newArr[0]);
-  let curr = newList;
-  let i = 1;
-  while (i < newArr.length) {
-    curr.next = new ListNode(newArr[i]);
-    curr = curr.next;
-    i += 1;
+    const newList = new ListNode(newArr[0]);
+    let curr = newList;
+    let i = 1;
+    while (i < newArr.length) {
+      curr.next = new ListNode(newArr[i]);
+      curr = curr.next;
+      i += 1;
+    }
+
+    result = newList;
   }
-
-  return newList;
+  return result;
 };
 
 
