@@ -21,8 +21,7 @@
  */
 const lengthOfLastWord = (s) => {
   const split = s.split(' ').filter(n => n);
-  console.log(split);
-  return split[split.length - 1].length;
+  return split[split.length - 1] ? split[split.length - 1].length : 0;
 };
 
 console.log(lengthOfLastWord('Hello World'));
