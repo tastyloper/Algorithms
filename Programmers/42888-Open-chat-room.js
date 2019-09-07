@@ -72,6 +72,7 @@
  * @param {string[]} record
  * @return {string[]}
  */
+// 1차
 // const solution = (record) => {
 //   if (record.length < 1 && record.length > 100000) return [];
 //   return record.reduce((pre, val, idx, arr) => {
@@ -87,21 +88,20 @@
 //     return pre;
 //   }, []).map(v => `${v.name}님이 ${v.state === 'Enter' ? '들어왔' : '나갔'}습니다.`);
 // };
+// 2차
 const solution = (record) => {
   if (record.length < 1 && record.length > 100000) return [];
-  let recordObj = [];
-  for (let i = 0; i < record.length; i++) {
-    const splitArr = record[i].split(' ');
-    if (splitArr[0] === 'Enter') {
-      recordObj = recordObj.map(v => v.uid === splitArr[1] ? { ...v, name: splitArr[2] } : v);
-      recordObj = [...recordObj, { state: 'Enter', uid: splitArr[1], name: splitArr[2] }];
-    } else if (splitArr[0] === 'Leave') {
-      recordObj = [...recordObj, { state: 'Leave', uid: splitArr[1], name: recordObj.find(v => v.uid === splitArr[1]).name }];
-    } else {
-      recordObj = recordObj.map(v => v.uid === splitArr[1] ? { ...v, name: splitArr[2] } : v);
+  let users = {};
+  record.slice().reverse().forEach(v => {
+    const splitArr = v.split(' ');
+    if (!users.hasOwnProperty(splitArr[1]) && (splitArr[0] === 'Enter' || splitArr[0] === 'Change')) {
+      users[splitArr[1]] = splitArr[2];
     }
-  }
-  return recordObj.map(v => `${v.name}님이 ${v.state === 'Enter' ? '들어왔' : '나갔'}습니다.`);
+  });
+  return record.filter(v => v.split(' ')[0] !== 'Change').map(v => {
+    const splitArr = v.split(' ');
+    return `${users[splitArr[1]]}님이 ${splitArr[0] === 'Enter' ? '들어왔' : '나갔'}습니다.`
+  });
 };
 
 console.log(solution(['Enter uid1234 Muzi', 'Enter uid4567 Prodo','Leave uid1234','Enter uid1234 Prodo','Change uid4567 Ryan']));
