@@ -24,11 +24,20 @@
  * @return {number[][]}
  */
 const generate = numRows => {
-  let result = [[1]];
-  if (numRows === 1) return result;
-  result.push([1, 1]);
-  if (numRows === 2) return result;
-  
+  if (numRows === 0) return [];
+  const result = [];
+  for (let i = 0; i < numRows; i++) {
+    let currRow = [];
+    for (let j = 0; j <= i; j++) {
+      if (j === 0 || j === i) {
+        currRow.push(1);
+      } else {
+        currRow.push(result[i - 1][j - 1] + result[i - 1][j]);
+      }
+    }
+    result.push(currRow);
+  }
+  return result;
 };
 
 console.log(generate(5));
